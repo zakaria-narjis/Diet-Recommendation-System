@@ -1,10 +1,13 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import List, Union
+from pydantic import BaseModel,conlist
+from typing import List, Union,Optional
 from datetime import timedelta
 from data import FoodData
 import keys
-from model import recommend
+from model import recommend,output_recommended_recipes
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 username = keys.username
 password= keys.password
@@ -24,16 +27,21 @@ app = FastAPI()
 #     def calculate_bmi(self,):
 #         bmi=
 
+class params(BaseModel):
+    n_neighbors:int=5
+    return_distance:bool=False
+
 class PredictionIn(BaseModel):
-    nutrition_input:list[float]
+    nutrition_input:conlist(float, min_items=9, max_items=9)
     ingredients:list[str]=[]
-    params:dict={'return_distance':False}
+    params:Optional[params]
+
 
 class Recipe(BaseModel):
-    name:str
-    CookTime:timedelta=timedelta(0)
-    PrepTime:timedelta=timedelta(0)
-    TotalTime:timedelta=timedelta(0)
+    Name:str
+    CookTime:str
+    PrepTime:str
+    TotalTime:str
     RecipeIngredientParts:list[str]
     Calories:float
     FatContent:float
@@ -47,7 +55,7 @@ class Recipe(BaseModel):
     RecipeInstructions:list[str]
 
 class PredictionOut(BaseModel):
-    output:List[Recipe]=[]
+    output:List[Recipe]=None
 
 
 @app.get("/")
@@ -57,4 +65,10 @@ def home():
 
 @app.post("/predict/",response_model=PredictionOut)
 def update_item(prediction_input:PredictionIn):
-    return recommend(dataset,PredictionIn.nutrition_input,PredictionIn.ingredients,PredictionIn.params)
+    recommendation_dataframe=recommend(dataset,prediction_input.nutrition_input,prediction_input.ingredients,prediction_input.params.dict())
+    output=output_recommended_recipes(recommendation_dataframe)
+    if output is None:
+        return None
+    else:
+        return {"output":output}
+
