@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel,conlist
-from typing import List, Union,Optional
-from datetime import timedelta
+from typing import List,Optional
 from data import FoodData
 import keys
 from model import recommend,output_recommended_recipes
@@ -17,15 +16,6 @@ dataset=data.test()
 
 app = FastAPI()
 
-
-# class Person(BaseModel):
-#     age: int
-#     Gender: bool
-#     height: float
-#     weight: float
-#     bmi:
-#     def calculate_bmi(self,):
-#         bmi=
 
 class params(BaseModel):
     n_neighbors:int=5
@@ -55,7 +45,7 @@ class Recipe(BaseModel):
     RecipeInstructions:list[str]
 
 class PredictionOut(BaseModel):
-    output:List[Recipe]=None
+    output: Optional[List[Recipe]] = None
 
 
 @app.get("/")
@@ -68,7 +58,7 @@ def update_item(prediction_input:PredictionIn):
     recommendation_dataframe=recommend(dataset,prediction_input.nutrition_input,prediction_input.ingredients,prediction_input.params.dict())
     output=output_recommended_recipes(recommendation_dataframe)
     if output is None:
-        return None
+        return {"output":None}
     else:
         return {"output":output}
 

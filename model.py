@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import re
 from sklearn.preprocessing import StandardScaler
@@ -6,7 +5,6 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
-import time
 
 def scaling(dataframe):
     scaler=StandardScaler()
@@ -27,12 +25,6 @@ def extract_data(dataframe,ingredients):
     extracted_data=dataframe.copy()
     extracted_data=extract_ingredient_filtered_data(extracted_data,ingredients)
     return extracted_data
-
-# def extract_nutritional_filtered_data(dataframe,max_nutritional_values):
-#     extracted_data=dataframe.copy()
-#     for column,maximum in zip(extracted_data.columns[6:15],max_nutritional_values):
-#         extracted_data=extracted_data[extracted_data[column]<maximum]
-#     return extracted_data
     
 def extract_ingredient_filtered_data(dataframe,ingredients):
     extracted_data=dataframe.copy()
