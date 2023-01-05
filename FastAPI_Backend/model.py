@@ -46,26 +46,6 @@ def recommend(dataframe,_input,ingredients=[],params={'return_distance':False}):
         else:
             return None
 
-def get_total_minutes(time_string):
-    # Use a regular expression to extract the number of hours and minutes
-    hours_match = re.search(r'(\d+)H', time_string)
-    minutes_match = re.search(r'(\d+)M', time_string)
-    
-    # If the regular expression didn't find any matches, set the values to 0
-    hours = 0
-    minutes = 0
-    
-    # If the regular expression found a match for hours, extract the value
-    if hours_match:
-        hours = int(hours_match.group(1))
-    
-    # If the regular expression found a match for minutes, extract the value
-    if minutes_match:
-        minutes = int(minutes_match.group(1))
-    
-    # Return the total number of minutes
-    return str(hours * 60 + minutes)
-
 def extract_quoted_strings(s):
     # Find all the strings inside double quotes
     strings = re.findall(r'"([^"]*)"', s)
@@ -73,14 +53,11 @@ def extract_quoted_strings(s):
     return strings
 
 def output_recommended_recipes(dataframe):
-    if dataframe is not None:
-        dataframe['CookTime']=dataframe['CookTime'].map(lambda x:get_total_minutes(x))
-        dataframe['PrepTime']=dataframe['PrepTime'].map(lambda x:get_total_minutes(x))
-        dataframe['TotalTime']=dataframe['TotalTime'].map(lambda x:get_total_minutes(x))
-        output=dataframe.to_dict("records")
+    output=dataframe.copy()
+    if output is not None:
+        output=output.to_dict("records")
         for recipe in output:
             recipe['RecipeIngredientParts']=extract_quoted_strings(recipe['RecipeIngredientParts'])
             recipe['RecipeInstructions']=extract_quoted_strings(recipe['RecipeInstructions'])
-        return output
-    else:
-        return None
+    return output
+
