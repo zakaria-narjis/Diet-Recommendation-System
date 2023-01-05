@@ -1,18 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel,conlist
 from typing import List,Optional
-from data import FoodData
+import pandas as pd
 import keys as keys
 from model import recommend,output_recommended_recipes
-import logging
 
-logging.basicConfig(level=logging.DEBUG)
 
-username = keys.username
-password= keys.password
-CONNECTION_URL = "mongodb+srv://"+username+":"+password+"@fooddata.9pkittm.mongodb.net/test"
-data=FoodData(CONNECTION_URL)
-dataset=data.test()
+dataset=pd.read_csv("..\Data\dataset.csv",compression='gzip')
 
 app = FastAPI()
 
