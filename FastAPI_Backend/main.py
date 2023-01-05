@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel,conlist
 from typing import List,Optional
-from FastAPI_Backend.data import FoodData
-import FastAPI_Backend.keys as keys
-from FastAPI_Backend.model import recommend,output_recommended_recipes
+from data import FoodData
+import keys as keys
+from model import recommend,output_recommended_recipes
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
