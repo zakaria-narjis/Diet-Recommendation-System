@@ -2,16 +2,18 @@
 
 FROM python:3.10.8
 
-COPY requirements.txt app/requirements.txt
+RUN mkdir -p app/backend
 
-WORKDIR /app
+COPY FastAPI_Backend/requirements.txt app/backend/requirements.txt
+COPY Data app/Data
+
+COPY FastAPI_Backend app/backend
+
+WORKDIR /app/backend
 
 RUN pip install --upgrade pip
-
 RUN pip install -r requirements.txt
 
-COPY . /app
+EXPOSE 8080
 
-EXPOSE 8000
-
-CMD ["uvicorn","main:app","--host","0.0.0.0","--port","8000","--reload"]
+CMD ["uvicorn","main:app","--host","0.0.0.0","--port","8080","--reload"]
