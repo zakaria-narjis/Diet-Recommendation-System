@@ -23,7 +23,9 @@ class Generator:
         return response
 
 
-gen=Generator([100,10,10,10,10,10,10,10,10])
-rep=gen.generate()
-df=pd.DataFrame(data=eval(rep.text)['output'])
-print(df.info())
+# gen=Generator([100,10,10,10,10,10,10,10,10])
+# rep=gen.generate()
+# df=pd.DataFrame(data=eval(rep.text)['output'])
+# for recipe in rep.json()['output']:
+#     print(recipe['Name'])
+# #print(type(rep.json()))
