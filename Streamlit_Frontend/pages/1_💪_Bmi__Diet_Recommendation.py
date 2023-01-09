@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from Generate_Recommendations import Generator
 from random import uniform as rnd
+from ImageFinder.ImageFinder import get_images_links as find_image
 
 st.set_page_config(page_title="Automatic Diet Recommendation", page_icon="💪",layout="wide")
 
@@ -55,11 +56,11 @@ class Person:
         recommendations=[]
         for meal in self.meals_calories_perc:
             meal_calories=self.meals_calories_perc[meal]*total_calories
-            if meal is 'breakfast':        
+            if meal=='breakfast':        
                 recommended_nutrition = [meal_calories,rnd(10,30),rnd(0,4),rnd(0,30),rnd(0,400),rnd(40,75),rnd(4,10),rnd(0,10),rnd(30,100)]
-            elif meal is 'launch':
+            elif meal=='launch':
                 recommended_nutrition = [meal_calories,rnd(20,40),rnd(0,4),rnd(0,30),rnd(0,400),rnd(40,75),rnd(4,20),rnd(0,10),rnd(50,175)]
-            elif meal is 'dinner':
+            elif meal=='dinner':
                 recommended_nutrition = [meal_calories,rnd(20,40),rnd(0,4),rnd(0,30),rnd(0,400),rnd(40,75),rnd(4,20),rnd(0,10),rnd(50,175)] 
             else:
                 recommended_nutrition = [meal_calories,rnd(10,30),rnd(0,4),rnd(0,30),rnd(0,400),rnd(40,75),rnd(4,10),rnd(0,10),rnd(30,100)]
@@ -106,9 +107,10 @@ class Display:
                 for recipe in recommendation:
                 #     st.write(recipe['Name'])
                     recipe_name=recipe['Name']
-                    recipe=f'<div style="width: 100%; height: 80px;display:flex; align-items:center; justify-content:center;fontWeight: 600; color: #000000; text-align: center; background: #E0E0EF; border-radius: 8px;margin-bottom: 8px;" >{recipe_name}</div>'
+                    recipe_img=f'<img src={find_image(recipe_name)} alt={recipe_name}>'
+                    recipe=f'<div style="width: 100%; height: 80px;display:flex; align-items:center; justify-content:center;fontWeight: 600; color: #000000; text-align: center; background: #E0E0EF; border-radius: 8px;margin-bottom: 8px;" >{recipe_name}{recipe_img}</div>'
                     recipes+=recipe
-                meal_text=f'<div style="width:33%";><div style="text-align:center;"><h2 style="font-weight:600;font-size:18px;color:#333;margin-bottom:16px;">{meal_name.upper()}</h2> </div>{recipes}</div>'                    
+                meal_text=f'<div style="width:33%";><div style="text-align:center;"><h2 style="font-weight:600;font-size:18px;color:#333;margin-bottom:16px;">{meal_name.upper()}</h2></div>{recipes}</div>'                    
                 columns+=meal_text
             st.markdown(f'<div style="display:flex;justifyContent: space-between;gap:16px;">{columns}</div>', unsafe_allow_html=True)
                         
@@ -143,5 +145,5 @@ if st.button("Generate"):
         display.display_calories(person)
     with st.container():
         display.display_recommendation(person)
-        st.success('Recommendation Generated Successfully !', icon="✅")
+        # st.success('Recommendation Generated Successfully !', icon="✅")
 
