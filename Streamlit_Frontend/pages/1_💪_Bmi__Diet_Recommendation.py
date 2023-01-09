@@ -1,16 +1,17 @@
 import streamlit as st
+import pandas as pd
 
-st.set_page_config(page_title="Plotting Demo", page_icon="💪")
+st.set_page_config(page_title="Plotting Demo", page_icon="💪",layout="wide")
 
 class Person:
 
-    def __init__(self,age,height,weight,gender,activity):
+    def __init__(self,age,height,weight,gender,activity,meals_calories_perc):
         self.age=age
         self.height=height
         self.weight=weight
         self.gender=gender
         self.activity=activity
-
+        self.meals_calories_perc=meals_calories_perc
     def calculate_bmi(self,):
         bmi=round(self.weight/((self.height/100)**2),2)
         return bmi
@@ -20,13 +21,17 @@ class Person:
         bmi_string=f'{bmi} kg/m²'
         if bmi<18.5:
             category='Underweight'
+            color='Red'
         elif 18.5<=bmi<25:
             category='Normal'
+            color='Green'
         elif 25<=bmi<30:
             category='Overweight'
+            color='Yellow'
         else:
             category='Obesity'    
-        return bmi_string,category
+            color='Red'
+        return bmi_string,category,color
 
     def calculate_bmr(self):
         if gender=='Male':
@@ -44,49 +49,61 @@ class Person:
 
 class Display:
     def __init__(self):
+        self.plans=["Maintain weight","Mild weight loss","Weight loss","Extreme weight loss"]
+        self.weights=[1,0.9,0.8,0.6]
+        self.losses=['','(0.25 kg/week)','(0.5 kg/week)','(1 kg/week)']
         pass
 
     def display_bmi(self,person):
-        bmi_string,category = person.display_result()
+        st.header('BMI CALCULATOR')
+        bmi_string,category,color = person.display_result()
         st.metric(label="Body Mass Index (BMI)", value=bmi_string)
-        st.write(category)
+        new_title = f'<p style="font-family:sans-serif; color:{color}; font-size: 25px;">{category}</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
         st.markdown(
             """
-            - Healthy BMI range: 18.5 kg/m² - 25 kg/m²;
-            - Healthy weight for the height: 59.9 kg/m² - 81.0 kg/m²;
-            - Lose 19.0 kgs to reach a BMI of 25 kg/m².
+            Healthy BMI range: 18.5 kg/m² - 25 kg/m².
             """)   
 
     def display_calories(self,person):
+        st.header('CALORIES CALCULATOR')        
         maintain_calories=person.calories_calculator()
-        col1,col2,col3,col4=st.columns(4)
-        with col1:
-            st.subheader("Maintain weight")
-            st.write(f'{round(maintain_calories)} Calories/day')
-        with col2:
-            st.subheader("Mild weight loss")
-            st.write(f'{round(maintain_calories*0.9)} Calories/day')
-        with col3:
-            st.subheader("Weight loss")
-            st.write(f'{round(maintain_calories*0.8)} Calories/day')
-        with col4:
-            st.subheader("Extreme weight loss")
-            st.write(f'{round(maintain_calories*0.6)} Calories/day')           
+        st.write('The results show a number of daily calorie estimates that can be used as a guideline for how many calories to consume each day to maintain, lose, or gain weight at a chosen rate.')
+        for plan,weight,loss in zip(self.plans,self.weights,self.losses):
+            st.write(f'{plan} :{round(maintain_calories*weight)} Calories/day {loss}')
+
+    def display_recommendation(self,person):
+        st.header('DIET RECOMMENDATOR')
+        option = st.selectbox('Choose your weight loss plan:',self.plans)
+        weight=self.weights[self.plans.index(option)]
+        total_calories=weight*person.calories_calculator()
+        meals=person.meals_calories_perc
+        for meal,meal_name in zip(st.columns(len(meals)),meals):
+            with meal:
+                st.subheader(meal_name.upper())
 
 display=Display()
 
 with st.container():
-   st.write("Modify the values and click the Generate button to use")
-   age = st.number_input('Age',min_value=2, max_value=120, step=1)
-   height = st.number_input('Height(cm)',min_value=50, max_value=300, step=1)
-   weight = st.number_input('Weight(kg)',min_value=10, max_value=300, step=1)
-   gender = st.radio('Gender',('Male','Female'))
-   activity = st.select_slider('Activity',options=['Little/no exercise', 'Light exercise', 'Moderate exercise (3-5 days/wk)', 'Very active (6-7 days/wk)', 
-   'Extra active (very active & physical job)'])
-
+    st.header('Automatic Diet Recommendation')
+    st.write("Modify the values and click the Generate button to use")
+    age = st.number_input('Age',min_value=2, max_value=120, step=1)
+    height = st.number_input('Height(cm)',min_value=50, max_value=300, step=1)
+    weight = st.number_input('Weight(kg)',min_value=10, max_value=300, step=1)
+    gender = st.radio('Gender',('Male','Female'))
+    activity = st.select_slider('Activity',options=['Little/no exercise', 'Light exercise', 'Moderate exercise (3-5 days/wk)', 'Very active (6-7 days/wk)', 
+    'Extra active (very active & physical job)'])
+    number_of_meals=st.slider('Meals per day',min_value=3,max_value=5,step=1,value=3)
+    if number_of_meals==3:
+        meals_calories_perc={'breakfast':0.35,'lunch':0.40,'dinner':0.25}
+    elif number_of_meals==4:
+        meals_calories_perc={'breakfast':0.30,'morning snack':0.05,'lunch':0.40,'dinner':0.25}
+    else:
+        meals_calories_perc={'breakfast':0.30,'morning snack':0.05,'lunch':0.40,'afternoon snack':0.05,'dinner':0.20}
 if st.button("Generate"):
-    person = Person(age,height,weight,gender,activity)
+    person = Person(age,height,weight,gender,activity,meals_calories_perc)
     with st.container():
         display.display_bmi(person)
         display.display_calories(person)
+        display.display_recommendation(person)
 
