@@ -99,20 +99,33 @@ class Display:
         with st.spinner('Generating recommendations...'): 
             meals=person.meals_calories_perc
             recommendations=person.generate_recommendations()
-            columns=''
-            for meal_name,recommendation in zip(meals,recommendations):
-                #st.subheader(meal_name.upper())
-                recipes=''
-                # st.markdown(f'<div style="text-align: center;">{meal_name.upper()}</div>', unsafe_allow_html=True)     
-                for recipe in recommendation:
-                #     st.write(recipe['Name'])
-                    recipe_name=recipe['Name']
-                    recipe_img=f'<img src={find_image(recipe_name)} alt={recipe_name}>'
-                    recipe=f'<div style="width: 100%; height: 80px;display:flex; align-items:center; justify-content:center;fontWeight: 600; color: #000000; text-align: center; background: #E0E0EF; border-radius: 8px;margin-bottom: 8px;" >{recipe_name}{recipe_img}</div>'
-                    recipes+=recipe
-                meal_text=f'<div style="width:33%";><div style="text-align:center;"><h2 style="font-weight:600;font-size:18px;color:#333;margin-bottom:16px;">{meal_name.upper()}</h2></div>{recipes}</div>'                    
-                columns+=meal_text
-            st.markdown(f'<div style="display:flex;justifyContent: space-between;gap:16px;">{columns}</div>', unsafe_allow_html=True)
+            for meal_name,column,recommendation in zip(meals,st.columns(len(meals)),recommendations):
+                with column:
+                    st.subheader(meal_name.upper())
+                    #st.markdown(f'<div style="text-align: center;">{meal_name.upper()}</div>', unsafe_allow_html=True)     
+                    for recipe in recommendation:
+
+                        recipe_name=recipe['Name']
+                        expander = st.expander(recipe_name)
+                        recipe_img=f'<div><center><img src={find_image(recipe_name)} alt={recipe_name}></center></div>'
+                        nutritions_values=['Calories','FatContent','SaturatedFatContent','CholesterolContent','SodiumContent','CarbohydrateContent','FiberContent','SugarContent','ProteinContent']     
+                        nutritions_df=pd.DataFrame({value:[recipe[value]] for value in nutritions_values})      
+
+                        expander.markdown(recipe_img,unsafe_allow_html=True)  
+                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Nutritional Values</h5>', unsafe_allow_html=True)                   
+                        expander.dataframe(nutritions_df)
+                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Ingredients:</h5>', unsafe_allow_html=True)
+                        for ingredient in recipe['RecipeIngredientParts']:
+                            expander.markdown(f"""
+                                        - {ingredient}
+                            """)
+                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Recipe Instructions:</h5>', unsafe_allow_html=True)    
+                        for instruction in recipe['RecipeInstructions']:
+                            expander.markdown(f"""
+                                        - {instruction}
+                            """)                           
+
+
                         
 display=Display()
 
@@ -145,5 +158,5 @@ if st.button("Generate"):
         display.display_calories(person)
     with st.container():
         display.display_recommendation(person)
-        # st.success('Recommendation Generated Successfully !', icon="✅")
+        st.success('Recommendation Generated Successfully !', icon="✅")
 
