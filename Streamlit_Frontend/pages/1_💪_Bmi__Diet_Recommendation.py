@@ -3,8 +3,15 @@ import pandas as pd
 from Generate_Recommendations import Generator
 from random import uniform as rnd
 from ImageFinder.ImageFinder import get_images_links as find_image
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Automatic Diet Recommendation", page_icon="💪",layout="wide")
+
+# Streamlit states initialization
+if 'person' not in st.session_state:
+    st.session_state.generated = False
+    st.session_state.recommendations=None
+    st.session_state.person=None
 
 class Person:
 
@@ -67,6 +74,9 @@ class Person:
             generator=Generator(recommended_nutrition)
             recommended_recipes=generator.generate().json()['output']
             recommendations.append(recommended_recipes)
+        for recommendation in recommendations:
+            for recipe in recommendation:
+                recipe['image_link']=find_image(recipe['Name']) 
         return recommendations
 
 class Display:
@@ -94,20 +104,21 @@ class Display:
         for plan,weight,loss in zip(self.plans,self.weights,self.losses):
             st.write(f'{plan} :{round(maintain_calories*weight)} Calories/day {loss}')
 
-    def display_recommendation(self,person):
+    def display_recommendation(self,person,recommendations):
         st.header('DIET RECOMMENDATOR')  
         with st.spinner('Generating recommendations...'): 
             meals=person.meals_calories_perc
-            recommendations=person.generate_recommendations()
+            st.subheader('Recommended recipes:')
             for meal_name,column,recommendation in zip(meals,st.columns(len(meals)),recommendations):
                 with column:
-                    st.subheader(meal_name.upper())
-                    #st.markdown(f'<div style="text-align: center;">{meal_name.upper()}</div>', unsafe_allow_html=True)     
+                    #st.markdown(f'<div style="text-align: center;">{meal_name.upper()}</div>', unsafe_allow_html=True) 
+                    st.markdown(f'##### {meal_name.upper()}')    
                     for recipe in recommendation:
-
+                        
                         recipe_name=recipe['Name']
                         expander = st.expander(recipe_name)
-                        recipe_img=f'<div><center><img src={find_image(recipe_name)} alt={recipe_name}></center></div>'
+                        recipe_link=recipe['image_link']
+                        recipe_img=f'<div><center><img src={recipe_link} alt={recipe_name}></center></div>'
                         nutritions_values=['Calories','FatContent','SaturatedFatContent','CholesterolContent','SodiumContent','CarbohydrateContent','FiberContent','SugarContent','ProteinContent']     
                         nutritions_df=pd.DataFrame({value:[recipe[value]] for value in nutritions_values})      
                         
@@ -130,14 +141,68 @@ class Display:
                                 - Preparation Time: {recipe['PrepTime']}min
                                 - Total Time      : {recipe['TotalTime']}min
                             """)                       
+        return recommendations
 
+    def display_meal_choices(self,recommendations):    
+        st.subheader('Choose your meal composition:')
+        if len(recommendations)==3:
+            breakfast_column,launch_column,dinner_column=st.columns(3)
+            with breakfast_column:
+                breakfast_choice=st.selectbox(f'Choose your breakfast:',[recipe['Name'] for recipe in recommendations[0]])
+            with launch_column:
+                launch_choice=st.selectbox(f'Choose your launch_choice:',[recipe['Name'] for recipe in recommendations[1]])
+            with dinner_column:
+                dinner_choice=st.selectbox(f'Choose your dinner_choice:',[recipe['Name'] for recipe in recommendations[2]])  
+            choices=[breakfast_choice,launch_choice,dinner_choice]     
+        elif len(recommendations)==4:
+            breakfast_column,morning_snack,launch_column,dinner_column=st.columns(4)
+            with breakfast_column:
+                breakfast_choice=st.selectbox(f'Choose your breakfast:',[recipe['Name'] for recipe in recommendation])
+            with morning_snack:
+                morning_snack=st.selectbox(f'Choose your morning_snack:',[recipe['Name'] for recipe in recommendation])
+            with launch_column:
+                launch_choice=st.selectbox(f'Choose your launch_choice:',[recipe['Name'] for recipe in recommendation])
+            with dinner_column:
+                dinner_choice=st.selectbox(f'Choose your dinner_choice:',[recipe['Name'] for recipe in recommendation])
+            choices=[breakfast_choice,morning_snack,launch_choice,dinner_choice]                
+        else:
+            breakfast_column,morning_snack,launch_column,dinner_column=st.columns(5)
+            with breakfast_column:
+                breakfast_choice=st.selectbox(f'Choose your breakfast:',[recipe['Name'] for recipe in recommendation])
+            with morning_snack:
+                morning_snack=st.selectbox(f'Choose your morning_snack:',[recipe['Name'] for recipe in recommendation])
+            with launch_column:
+                launch_choice=st.selectbox(f'Choose your launch_choice:',[recipe['Name'] for recipe in recommendation])
+            with afternoon_snack:
+                afternoon_snack=st.selectbox(f'Choose your afternoon_snack:',[recipe['Name'] for recipe in recommendation])
+            with dinner_column:
+                dinner_choice=st.selectbox(f'Choose your  dinner_choice:',[recipe['Name'] for recipe in recommendation])
+            choices=[breakfast_choice,morning_snack,launch_choice,afternoon_snack,dinner_choice] 
+        total_calories,total_FatContent,total_SaturatedFatContent,total_CholesterolContent,total_SodiumContent,total_CarbohydrateContent,total_FiberContent,total_SugarContent,total_ProteinContent=0,0,0,0,0,0,0,0,0
+        for choice,meals_ in zip(choices,recommendations):
+            for meal in meals_:
+                if meal['Name']==choice:
+                    total_calories+=meal['Calories']
+                    total_FatContent+=meal['FatContent']
+                    total_SaturatedFatContent+=meal['SaturatedFatContent']
+                    total_CholesterolContent+=meal['CholesterolContent']
+                    total_SodiumContent+=meal['SodiumContent']
+                    total_CarbohydrateContent+=meal['CarbohydrateContent']
+                    total_FiberContent+=meal['FiberContent']
+                    total_SugarContent+=meal['SugarContent']
+                    total_ProteinContent+=meal['ProteinContent']
+        chart=pd.DataFrame(data={'total_calories':[total_calories],'total_FatContent':[total_FatContent]}) 
+        st.bar_chart(chart)   
+        fig, ax = plt.subplots()        
+        st.write(total_calories)           
 
-                        
 display=Display()
+title="<h1 style='text-align: center;'>Automatic Diet Recommendation</h1>"
+st.markdown(title, unsafe_allow_html=True)
+with st.form("recommendation_form"):
+    if "more_stuff" not in st.session_state:
+        st.session_state.more_stuff = False    
 
-with st.container():
-    title="<h1 style='text-align: center;'>Automatic Diet Recommendation</h1>"
-    st.markdown(title, unsafe_allow_html=True)
     #st.header('Automatic Diet Recommendation')
     st.write("Modify the values and click the Generate button to use")
     age = st.number_input('Age',min_value=2, max_value=120, step=1)
@@ -155,14 +220,22 @@ with st.container():
         meals_calories_perc={'breakfast':0.30,'morning snack':0.05,'lunch':0.40,'dinner':0.25}
     else:
         meals_calories_perc={'breakfast':0.30,'morning snack':0.05,'lunch':0.40,'afternoon snack':0.05,'dinner':0.20}
-    
-if st.button("Generate"):
+    generated = st.form_submit_button("Generate")
+if generated:
+    st.session_state.generated = True
     person = Person(age,height,weight,gender,activity,meals_calories_perc,weight_loss)
     with st.container():
         display.display_bmi(person)
     with st.container():
         display.display_calories(person)
-    with st.container():
-        display.display_recommendation(person)
-        st.success('Recommendation Generated Successfully !', icon="✅")
+    with st.spinner('Generating recommendations...'):     
+        recommendations=person.generate_recommendations()
+        st.session_state.recommendations=recommendations
+        st.session_state.person=person
 
+if st.session_state.generated:
+    with st.container():
+        display.display_recommendation(st.session_state.person,st.session_state.recommendations)
+        st.success('Recommendation Generated Successfully !', icon="✅")
+    with st.container():
+        display.display_meal_choices(st.session_state.recommendations)
