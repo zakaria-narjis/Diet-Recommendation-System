@@ -110,20 +110,26 @@ class Display:
                         recipe_img=f'<div><center><img src={find_image(recipe_name)} alt={recipe_name}></center></div>'
                         nutritions_values=['Calories','FatContent','SaturatedFatContent','CholesterolContent','SodiumContent','CarbohydrateContent','FiberContent','SugarContent','ProteinContent']     
                         nutritions_df=pd.DataFrame({value:[recipe[value]] for value in nutritions_values})      
-
+                        
                         expander.markdown(recipe_img,unsafe_allow_html=True)  
-                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Nutritional Values</h5>', unsafe_allow_html=True)                   
+                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Nutritional Values (g):</h5>', unsafe_allow_html=True)                   
                         expander.dataframe(nutritions_df)
                         expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Ingredients:</h5>', unsafe_allow_html=True)
                         for ingredient in recipe['RecipeIngredientParts']:
                             expander.markdown(f"""
                                         - {ingredient}
                             """)
-                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Recipe Instructions:</h5>', unsafe_allow_html=True)    
+                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">RecipeInstructions:</h5>', unsafe_allow_html=True)    
                         for instruction in recipe['RecipeInstructions']:
                             expander.markdown(f"""
                                         - {instruction}
-                            """)                           
+                            """) 
+                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Cooking and Preparation Time:</h5>', unsafe_allow_html=True)   
+                        expander.markdown(f"""
+                                - Cook Time       : {recipe['CookTime']}min
+                                - Preparation Time: {recipe['PrepTime']}min
+                                - Total Time      : {recipe['TotalTime']}min
+                            """)                       
 
 
                         
