@@ -2,11 +2,14 @@ version: "3.10"
 
 services:
   frontend:
-    build: Streamlit_Frontend
+    build:
+      context: .
+      dockerfile: Streamlit_Frontend/Dockerfile
+    image: frontend:latest
     ports:
       - 8501:8501
     networks:
-      - jcnet
+      - project_network
     depends_on:
       - backend
     volumes:
@@ -14,13 +17,13 @@ services:
 
 
   backend:
-    build: FastAPI_Backend
+    build:
+      context: .
+      dockerfile: FastAPI_Backend/Dockerfile
+    image: backend:latest
     ports:
-      - 8000:8000
+      - 8080:8080
     networks:
-      - jcnet
-
-    volumes:
-      - ./FastAPI_Backend:/app/frontend
+      - project_network
 networks:
-  jcnet
+  project_network:
