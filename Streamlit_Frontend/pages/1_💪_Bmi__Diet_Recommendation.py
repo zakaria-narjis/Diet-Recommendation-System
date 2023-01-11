@@ -87,7 +87,7 @@ class Display:
     def __init__(self):
         self.plans=["Maintain weight","Mild weight loss","Weight loss","Extreme weight loss"]
         self.weights=[1,0.9,0.8,0.6]
-        self.losses=['','(0.25 kg/week)','(0.5 kg/week)','(1 kg/week)']
+        self.losses=['-0 kg/week','-0.25 kg/week)','-0.5 kg/week)','-1 kg/week']
         pass
 
     def display_bmi(self,person):
@@ -105,8 +105,11 @@ class Display:
         st.header('CALORIES CALCULATOR')        
         maintain_calories=person.calories_calculator()
         st.write('The results show a number of daily calorie estimates that can be used as a guideline for how many calories to consume each day to maintain, lose, or gain weight at a chosen rate.')
-        for plan,weight,loss in zip(self.plans,self.weights,self.losses):
-            st.write(f'{plan} :{round(maintain_calories*weight)} Calories/day {loss}')
+        for plan,weight,loss,col in zip(self.plans,self.weights,self.losses,st.columns(4)):
+            with col:
+                st.metric(label=plan,value=f'{round(maintain_calories*weight)} Calories/day',delta=loss,delta_color="inverse")
+                st.write(f'{plan} :{round(maintain_calories*weight)} Calories/day {loss}')
+
 
     def display_recommendation(self,person,recommendations):
         st.header('DIET RECOMMENDATOR')  
@@ -133,7 +136,7 @@ class Display:
                             expander.markdown(f"""
                                         - {ingredient}
                             """)
-                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">RecipeInstructions:</h5>', unsafe_allow_html=True)    
+                        expander.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Recipe Instructions:</h5>', unsafe_allow_html=True)    
                         for instruction in recipe['RecipeInstructions']:
                             expander.markdown(f"""
                                         - {instruction}
@@ -195,6 +198,7 @@ class Display:
         loss_calories_chose=round(person.calories_calculator()*person.weight_loss)
 
         # Display corresponding graphs
+        st.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Total Calories Recipes vs {st.session_state.weight_loss_option} Calories:</h5>', unsafe_allow_html=True)
         total_calories_graph_options = {
     "xAxis": {
         "type": "category",
@@ -212,6 +216,7 @@ class Display:
     ],
 }
         st_echarts(options=total_calories_graph_options,height="400px",)
+        st.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Nutritional Values:</h5>', unsafe_allow_html=True)
         nutritions_graph_options = {
     "tooltip": {"trigger": "item"},
     "legend": {"top": "5%", "left": "center"},
