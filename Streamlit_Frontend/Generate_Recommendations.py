@@ -21,11 +21,3 @@ class Generator:
         }
         response=requests.post(url='http://127.0.0.1:8000/predict/',data=json.dumps(request))
         return response
-
-
-# gen=Generator([100,10,10,10,10,10,10,10,10])
-# rep=gen.generate()
-# df=pd.DataFrame(data=eval(rep.text)['output'])
-# for recipe in rep.json()['output']:
-#     print(recipe['Name'])
-# #print(type(rep.json()))
