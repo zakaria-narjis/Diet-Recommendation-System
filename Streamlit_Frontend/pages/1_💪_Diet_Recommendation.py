@@ -86,7 +86,7 @@ class Display:
     def __init__(self):
         self.plans=["Maintain weight","Mild weight loss","Weight loss","Extreme weight loss"]
         self.weights=[1,0.9,0.8,0.6]
-        self.losses=['-0 kg/week','-0.25 kg/week)','-0.5 kg/week)','-1 kg/week']
+        self.losses=['-0 kg/week','-0.25 kg/week','-0.5 kg/week','-1 kg/week']
         pass
 
     def display_bmi(self,person):

@@ -1,6 +1,5 @@
 import requests
 import json
-import pandas as pd
 
 class Generator:
     def __init__(self,nutrition_input:list,ingredients:list=[],params:dict={'n_neighbors':5,'return_distance':False}):
