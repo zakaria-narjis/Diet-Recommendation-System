@@ -107,8 +107,6 @@ class Display:
         for plan,weight,loss,col in zip(self.plans,self.weights,self.losses,st.columns(4)):
             with col:
                 st.metric(label=plan,value=f'{round(maintain_calories*weight)} Calories/day',delta=loss,delta_color="inverse")
-                st.write(f'{plan} :{round(maintain_calories*weight)} Calories/day {loss}')
-
 
     def display_recommendation(self,person,recommendations):
         st.header('DIET RECOMMENDATOR')  
@@ -146,7 +144,6 @@ class Display:
                                 - Preparation Time: {recipe['PrepTime']}min
                                 - Total Time      : {recipe['TotalTime']}min
                             """)                       
-        return recommendations
 
     def display_meal_choices(self,person,recommendations):    
         st.subheader('Choose your meal composition:')
@@ -165,14 +162,14 @@ class Display:
             with breakfast_column:
                 breakfast_choice=st.selectbox(f'Choose your breakfast:',[recipe['Name'] for recipe in recommendations[0]])
             with morning_snack:
-                morning_snack=st.selectbox(f'Choose your morning_snack:',[recipe['Name'] for recipe in recommendation[1]])
+                morning_snack=st.selectbox(f'Choose your morning_snack:',[recipe['Name'] for recipe in recommendations[1]])
             with launch_column:
                 launch_choice=st.selectbox(f'Choose your launch:',[recipe['Name'] for recipe in recommendations[2]])
             with dinner_column:
                 dinner_choice=st.selectbox(f'Choose your dinner:',[recipe['Name'] for recipe in recommendations[3]])
             choices=[breakfast_choice,morning_snack,launch_choice,dinner_choice]                
         else:
-            breakfast_column,morning_snack,launch_column,dinner_column=st.columns(5)
+            breakfast_column,morning_snack,launch_column,afternoon_snack,dinner_column=st.columns(5)
             with breakfast_column:
                 breakfast_choice=st.selectbox(f'Choose your breakfast:',[recipe['Name'] for recipe in recommendations[0]])
             with morning_snack:
@@ -197,7 +194,7 @@ class Display:
         loss_calories_chose=round(person.calories_calculator()*person.weight_loss)
 
         # Display corresponding graphs
-        st.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Total Calories Recipes vs {st.session_state.weight_loss_option} Calories:</h5>', unsafe_allow_html=True)
+        st.markdown(f'<h5 style="text-align: center;font-family:sans-serif;">Total Calories in Recipes vs {st.session_state.weight_loss_option} Calories:</h5>', unsafe_allow_html=True)
         total_calories_graph_options = {
     "xAxis": {
         "type": "category",
@@ -246,10 +243,6 @@ display=Display()
 title="<h1 style='text-align: center;'>Automatic Diet Recommendation</h1>"
 st.markdown(title, unsafe_allow_html=True)
 with st.form("recommendation_form"):
-    if "more_stuff" not in st.session_state:
-        st.session_state.more_stuff = False    
-
-    #st.header('Automatic Diet Recommendation')
     st.write("Modify the values and click the Generate button to use")
     age = st.number_input('Age',min_value=2, max_value=120, step=1)
     height = st.number_input('Height(cm)',min_value=50, max_value=300, step=1)
