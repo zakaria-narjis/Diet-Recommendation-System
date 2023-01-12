@@ -60,7 +60,7 @@ Our project is composed of different services (frontend,API). Therefore, our app
 <div align= "center"><img src="Assets/Architecture_diagram.png" width="600" height="400"/></div>
 
 
-## Technologies
+## :rocket: Technologies
 The project is created with:
 * Python: 3.10.8
 * fastapi 0.88.0
@@ -74,7 +74,7 @@ The project is created with:
 
 ![](https://img.icons8.com/color/48/null/python--v1.png)![](https://img.icons8.com/color/48/null/numpy.png)![](Assets/streamlit-icon-48x48.png)![](Assets/fastapi.ico)![](Assets/scikit-learn.ico)![](https://img.icons8.com/color/48/null/pandas.png)
 
-## Setup
+## :whale: Setup
 
 ### Run it locally
 #### Clone the repo
