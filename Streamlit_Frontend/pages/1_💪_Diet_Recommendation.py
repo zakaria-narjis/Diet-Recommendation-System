@@ -198,7 +198,7 @@ class Display:
         total_calories_graph_options = {
     "xAxis": {
         "type": "category",
-        "data": ['Total Calories you choosed', f"{st.session_state.weight_loss_option} Calories"],
+        "data": ['Total Calories you chose', f"{st.session_state.weight_loss_option} Calories"],
     },
     "yAxis": {"type": "value"},
     "series": [
