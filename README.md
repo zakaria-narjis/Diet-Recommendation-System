@@ -51,7 +51,7 @@ The application's front-end is made with Streamlit. Streamlit is an open source 
 
 ### Deployement using Docker
 #### Why Docker?
-Docker is a powerful tool for deploying machine learning projects because it allows for easy and consistent replication of the environment in which the model was trained. By using Docker, you can ensure that the environment in which the model runs is exactly the same as the environment in which it was trained, which can help prevent unexpected issues and improve model performance. Additionally, Docker allows for easy scaling and management of the deployment, making it a great choice for larger machine learning projects.
+By using Docker, you can ensure that the environment in which the application is exactly the same as the environment in which it was built, which can help prevent unexpected issues and improve model performance. Additionally, Docker allows for easy scaling and management of the deployment, making it a great choice for larger machine learning projects.
 #### Docker-Compose
 Our project is composed of different services (frontend,API). Therefore, our application should run on multiple containers. With the help of Docker-compose we can share our application using the yaml file that define the services that runs together.
 
