@@ -97,15 +97,14 @@ https://diet-recommendation-system.streamlit.app/
 
 ## Citation
 ```
-@software{zakaria_narjis_2024_12507164,
-  author       = {Zakaria Narjis},
-  title        = {{zakaria-narjis/Diet-Recommendation-System: Initial 
-                   Release}},
+@software{narjis_2024_12507829,
+  author       = {Narjis, Zakaria},
+  title        = {Diet recommendation system},
   month        = jun,
   year         = 2024,
   publisher    = {Zenodo},
-  version      = {v1.0.0},
-  doi          = {10.5281/zenodo.12507164},
-  url          = {https://doi.org/10.5281/zenodo.12507164}
+  version      = {v1.0.1},
+  doi          = {10.5281/zenodo.12507829},
+  url          = {https://doi.org/10.5281/zenodo.12507829}
 }
 ```
