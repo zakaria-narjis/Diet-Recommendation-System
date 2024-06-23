@@ -1,0 +1,45 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Diet recommendation system
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Zakaria
+    family-names: Narjis
+    email: zakaria.narjis.97@gmail.com
+    orcid: 'https://orcid.org/0009-0007-7033-4419'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.12507164
+    description: >-
+      https://github.com/zakaria-narjis/Diet-Recommendation-System/releases/tag/v1.0.0
+repository-code: >-
+  https://github.com/zakaria-narjis/Diet-Recommendation-System
+url: 'https://diet-recommendation-system.streamlit.app/'
+abstract: >-
+  People from all around the world are getting more
+  concerned in their health and way of life in today's
+  modern environment. However, avoiding junk food and
+  exercising alone are insufficient; we also need to eat a
+  balanced diet. We can live a healthy life with a balanced
+  diet based on our height, weight, and age. Your diet can
+  help you achieve and maintain a healthy weight, lower your
+  chance of developing chronic diseases (including cancer
+  and heart disease), and improve your general health when
+  combined with physical activity. Nevertheless, there is a
+  little SOTA project on food/diet recommendation system.
+  Therefore we propose a content-based recommendation system
+  for this purpose using machine learning.
+keywords:
+  - Machine learning
+  - Artificial Intelligence
+  - Recommendation systems
+  - K-Nearest Neighbors
+license: Apache-2.0
+commit: 5220900440aaf906d5bb6efe4fa0ac6ec3ee224b
+version: 1.0.0
+date-released: '2023-01-12'
