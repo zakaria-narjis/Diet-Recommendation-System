@@ -94,3 +94,16 @@ PS: You should have docker and docker-compose already installed
 ### Use the hosted version on Streamlit Cloud
 
 https://diet-recommendation-system.streamlit.app/
+
+## Citation
+```
+@software{Narjis_Diet_recommendation_system_2023,
+author = {Narjis, Zakaria},
+license = {Apache-2.0},
+month = jan,
+title = {{Diet recommendation system}},
+url = {https://github.com/zakaria-narjis/Diet-Recommendation-System},
+version = {1.0.0},
+year = {2023}
+}
+```
