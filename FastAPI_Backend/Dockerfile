@@ -1,19 +1,24 @@
 # backend/Dockerfile
 
-FROM python:3.10.8
+FROM python:3.12-slim
 
-RUN mkdir -p app/backend
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY FastAPI_Backend/requirements.txt app/backend/requirements.txt
-COPY Data app/Data
+RUN mkdir -p /app/backend
 
-COPY FastAPI_Backend app/backend
+COPY FastAPI_Backend/requirements.txt /app/backend/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r /app/backend/requirements.txt
+
+COPY FastAPI_Backend/ /app/backend/
+COPY Data/ /app/Data/
 
 WORKDIR /app/backend
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
 EXPOSE 8080
 
-CMD ["uvicorn","main:app","--host","0.0.0.0","--port","8080","--reload"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8080/ || exit 1
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,18 +1,23 @@
-# Frontend/Dockerfile
+# frontend/Dockerfile
 
-FROM python:3.10.8
+FROM python:3.12-slim
 
-RUN mkdir -p app/frontend
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY Streamlit_Frontend app/frontend
+RUN mkdir -p /app/frontend
+
+COPY Streamlit_Frontend/ /app/frontend/
 
 WORKDIR /app/frontend
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8501
 
-ENTRYPOINT ["streamlit","run"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8501/_stcore/health || exit 1
 
-CMD ["Hello.py"]
+ENTRYPOINT ["streamlit", "run"]
+CMD ["Hello.py", "--server.address=0.0.0.0"]
