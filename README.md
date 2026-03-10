@@ -92,10 +92,21 @@ At startup, each recipe's ingredient list is pre-parsed into a `frozenset` of lo
 
 ### Run with Docker Compose
 
+**Option A — Use pre-built images** (fastest, no build step):
+
 ```bash
 git clone https://github.com/zakaria-narjis/Diet-Recommendation-System
 cd Diet-Recommendation-System
-docker-compose up --build
+docker compose pull
+docker compose up -d
+```
+
+**Option B — Build from source**:
+
+```bash
+git clone https://github.com/zakaria-narjis/Diet-Recommendation-System
+cd Diet-Recommendation-System
+docker compose up --build -d
 ```
 
 Open **http://localhost:8501** in your browser.

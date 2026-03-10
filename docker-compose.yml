@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: FastAPI_Backend/Dockerfile
-    image: backend:latest
+    image: ghcr.io/zakaria-narjis/diet-backend:latest
     ports:
       - "8080:8080"
     networks:
@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: Streamlit_Frontend/Dockerfile
-    image: frontend:latest
+    image: ghcr.io/zakaria-narjis/diet-frontend:latest
     ports:
       - "8501:8501"
     networks:
