@@ -1,0 +1,4 @@
+pytest
+httpx>=0.22.0,<0.23.0
+ruff
+pytest-cov

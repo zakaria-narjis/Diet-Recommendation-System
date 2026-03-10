@@ -1,0 +1,11 @@
+{
+  "name": "Diet Recommendation System - Dev",
+  "build": {
+    "dockerfile": "../FastAPI_Backend/Dockerfile",
+    "context": ".."
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/app/backend,type=bind",
+  "workspaceFolder": "/app/backend",
+  "postCreateCommand": "pip install -r FastAPI_Backend/requirements-dev.txt",
+  "forwardPorts": [8080]
+}

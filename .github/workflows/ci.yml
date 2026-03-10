@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [refactor-and-ui-update]
+  pull_request:
+    branches: [refactor-and-ui-update]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r FastAPI_Backend/requirements.txt -r FastAPI_Backend/requirements-dev.txt
+
+      - name: Lint with ruff
+        run: ruff check FastAPI_Backend/
+
+      - name: Run tests with coverage
+        run: pytest FastAPI_Backend/tests/ -v --cov=FastAPI_Backend --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

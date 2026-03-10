@@ -1,3 +1,4 @@
+[![CI](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml/badge.svg)](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml)
 [![DOI](https://zenodo.org/badge/582718021.svg)](https://zenodo.org/doi/10.5281/zenodo.12507163)
 
 <h1 align="center">Diet Recommendation System</h1>
