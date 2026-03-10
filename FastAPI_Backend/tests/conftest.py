@@ -1,6 +1,8 @@
 import pandas as pd
 import pytest
 
+from model import extract_quoted_strings
+
 
 # Columns match the real dataset schema.
 # model.py uses iloc[:,6:15] for nutritional features (Calories → ProteinContent).
@@ -47,4 +49,8 @@ def _make_recipe(i: int) -> dict:
 
 @pytest.fixture
 def mock_dataset() -> pd.DataFrame:
-    return pd.DataFrame([_make_recipe(i) for i in range(10)], columns=COLUMNS)
+    df = pd.DataFrame([_make_recipe(i) for i in range(10)], columns=COLUMNS)
+    df["_ingredients_parsed"] = df["RecipeIngredientParts"].apply(
+        lambda x: frozenset(extract_quoted_strings(x))
+    )
+    return df
