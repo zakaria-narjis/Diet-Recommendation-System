@@ -11,7 +11,8 @@ def client(mock_dataset, monkeypatch):
     import main
     monkeypatch.setattr(main, "dataset", mock_dataset)
     from fastapi.testclient import TestClient
-    return TestClient(main.app)
+    with TestClient(main.app) as client:
+        yield client
 
 
 def test_health_check(client):

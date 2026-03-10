@@ -1,4 +1,6 @@
+import os
 import re
+from contextlib import asynccontextmanager
 from typing import Annotated, List, Literal, Optional
 
 import pandas as pd
@@ -9,16 +11,29 @@ from config import DEFAULT_N_NEIGHBORS, MEALS_CALORIES_PERC, WEIGHT_LOSS_PLANS
 from model import output_recommended_recipes, recommend
 from nutrition import build_nutrition_vector, calculate_bmi, calculate_bmr, calculate_tdee
 
-dataset = pd.read_csv('../Data/dataset.csv', compression='gzip')
-
-# Pre-process ingredient strings into frozensets once at startup.
-# Enables fast set-based filtering in extract_ingredient_filtered_data()
-# instead of scanning every row with a compound regex on each request.
-dataset['_ingredients_parsed'] = dataset['RecipeIngredientParts'].apply(
-    lambda x: frozenset(s.lower() for s in re.findall(r'"([^"]*)"', x))
+# Absolute path so the app works regardless of working directory.
+_DATASET_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), '..', 'Data', 'dataset.csv'
 )
 
-app = FastAPI()
+dataset: Optional[pd.DataFrame] = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global dataset
+    if dataset is None:
+        # Pre-process ingredient strings into frozensets once at startup.
+        # Enables fast set-based filtering in extract_ingredient_filtered_data()
+        # instead of scanning every row with a compound regex on each request.
+        dataset = pd.read_csv(_DATASET_PATH, compression='gzip')
+        dataset['_ingredients_parsed'] = dataset['RecipeIngredientParts'].apply(
+            lambda x: frozenset(s.lower() for s in re.findall(r'"([^"]*)"', x))
+        )
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 # ---------------------------------------------------------------------------
