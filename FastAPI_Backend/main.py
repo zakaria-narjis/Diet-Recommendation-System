@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
 from config import DEFAULT_N_NEIGHBORS, MEALS_CALORIES_PERC, WEIGHT_LOSS_PLANS
+from image_finder import get_image_url
 from model import output_recommended_recipes, recommend
 from nutrition import build_nutrition_vector, calculate_bmi, calculate_bmr, calculate_tdee
 
@@ -56,6 +57,7 @@ class Recipe(BaseModel):
     SugarContent: float
     ProteinContent: float
     RecipeInstructions: list[str]
+    image_url: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -127,6 +129,9 @@ def predict(prediction_input: PredictionIn):
         params,
     )
     output = output_recommended_recipes(recommendation_dataframe)
+    if output:
+        for recipe in output:
+            recipe['image_url'] = get_image_url(recipe['Name'])
     return {"output": output}
 
 
@@ -145,9 +150,12 @@ def generate_meal_plan(person: PersonData):
             dataset, vector, [],
             {"n_neighbors": DEFAULT_N_NEIGHBORS, "return_distance": False},
         )
+        recipes = output_recommended_recipes(recs) if recs is not None else []
+        for recipe in recipes:
+            recipe['image_url'] = get_image_url(recipe['Name'])
         meals.append(MealRecommendation(
             meal_name=meal_name,
-            recipes=output_recommended_recipes(recs) if recs is not None else [],
+            recipes=recipes,
         ))
 
     return MealPlanOut(

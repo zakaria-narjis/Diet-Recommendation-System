@@ -3,7 +3,6 @@ import os
 import pandas as pd
 import requests
 import streamlit as st
-from ImageFinder.ImageFinder import get_images_links as find_image
 from streamlit_echarts import st_echarts
 
 st.set_page_config(page_title="Automatic Diet Recommendation", page_icon="💪", layout="wide")
@@ -87,7 +86,7 @@ class Display:
                 for recipe in meal['recipes']:
                     recipe_name = recipe['Name']
                     expander = st.expander(recipe_name)
-                    recipe_link = find_image(recipe_name)
+                    recipe_link = recipe['image_url']
                     nutritions_df = pd.DataFrame(
                         {value: [recipe[value]] for value in NUTRITION_COLUMNS}
                     )
