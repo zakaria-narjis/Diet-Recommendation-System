@@ -1,9 +1,12 @@
-[![CI](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml/badge.svg)](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml)
-[![DOI](https://zenodo.org/badge/582718021.svg)](https://zenodo.org/doi/10.5281/zenodo.12507163)
+<div align="center">
+
+[![CI](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml/badge.svg)](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml) [![DOI](https://zenodo.org/badge/582718021.svg)](https://zenodo.org/doi/10.5281/zenodo.12507163) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+</div>
 
 <h1 align="center">Diet Recommendation System</h1>
 <div align="center">
-  <img src="Assets/logo_img1.jpg" />
+  <img src="Assets/logo_front_page.png" />
   <h4>A content-based diet recommendation web app built with Scikit-Learn, FastAPI, and Streamlit.</h4>
 </div>
 
