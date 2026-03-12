@@ -4,7 +4,7 @@ on:
   push:
     branches: [refactor-and-ui-update]
   pull_request:
-    branches: [refactor-and-ui-update]
+    branches: [main]
 
 jobs:
   test:
