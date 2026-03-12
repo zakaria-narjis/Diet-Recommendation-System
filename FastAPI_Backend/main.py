@@ -5,6 +5,7 @@ from typing import Annotated, List, Literal, Optional
 
 import pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from config import DEFAULT_N_NEIGHBORS, MEALS_CALORIES_PERC, WEIGHT_LOSS_PLANS
@@ -35,6 +36,17 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost",
+        "http://localhost:80",
+    ],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 40 33% 97%;
+    --foreground: 150 25% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 25% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 25% 10%;
+
+    --primary: 152 45% 28%;
+    --primary-foreground: 40 33% 97%;
+
+    --secondary: 36 60% 92%;
+    --secondary-foreground: 150 25% 10%;
+
+    --muted: 40 20% 93%;
+    --muted-foreground: 150 10% 45%;
+
+    --accent: 16 70% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 40 15% 88%;
+    --input: 40 15% 88%;
+    --ring: 152 45% 28%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+
+    --gradient-hero: linear-gradient(135deg, hsl(152 45% 28%), hsl(152 45% 20%));
+    --gradient-warm: linear-gradient(135deg, hsl(36 60% 92%), hsl(40 33% 97%));
+    --shadow-card: 0 4px 24px -4px hsl(150 25% 10% / 0.08);
+    --shadow-card-hover: 0 8px 32px -4px hsl(150 25% 10% / 0.14);
+  }
+
+  .dark {
+    --background: 150 20% 6%;
+    --foreground: 40 33% 95%;
+    --card: 150 15% 10%;
+    --card-foreground: 40 33% 95%;
+    --popover: 150 15% 10%;
+    --popover-foreground: 40 33% 95%;
+    --primary: 152 45% 45%;
+    --primary-foreground: 150 20% 6%;
+    --secondary: 150 15% 15%;
+    --secondary-foreground: 40 33% 95%;
+    --muted: 150 10% 15%;
+    --muted-foreground: 150 10% 55%;
+    --accent: 16 70% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 150 10% 18%;
+    --input: 150 10% 18%;
+    --ring: 152 45% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .nutrition-slider {
+    @apply w-full;
+  }
+  .recipe-card {
+    @apply bg-card rounded-xl overflow-hidden transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+  .recipe-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+}

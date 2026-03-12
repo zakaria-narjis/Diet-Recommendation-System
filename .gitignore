@@ -5,3 +5,5 @@ FastAPI_Backend/data.py
 test.py
 test.ipynb
 .coverage
+CLAUDE.md
+.claudeignore

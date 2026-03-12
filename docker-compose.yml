@@ -19,18 +19,16 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: Streamlit_Frontend/Dockerfile
-    image: ghcr.io/zakaria-narjis/diet-frontend:latest
+      context: ./react_frontend
+      dockerfile: Dockerfile
+    image: ghcr.io/zakaria-narjis/diet-react-frontend:latest
     ports:
-      - "8501:8501"
+      - "80:80"
     networks:
       - project_network
     depends_on:
       backend:
         condition: service_healthy
-    environment:
-      - BACKEND_URL=http://backend:8080
 
 networks:
   project_network:
