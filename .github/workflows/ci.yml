@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [refactor-and-ui-update]
+    branches: [refactor-and-ui-update, dev]
   pull_request:
     branches: [main]
 

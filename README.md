@@ -25,6 +25,18 @@
 
 ---
 
+## Star History
+
+<a href="https://www.star-history.com/?repos=zakaria-narjis%2FDiet-Recommendation-System&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=zakaria-narjis/Diet-Recommendation-System&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=zakaria-narjis/Diet-Recommendation-System&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=zakaria-narjis/Diet-Recommendation-System&type=date&legend=top-left" />
+ </picture>
+</a>
+
+---
+
 ## Overview
 
 A full-stack diet recommendation system that generates personalized meal plans based on user health data (age, weight, height, activity level) or custom nutritional targets. The recommendation engine uses a content-based approach with cosine similarity over nutritional vectors to find the closest matching recipes from a dataset of 500,000+ Food.com recipes.
