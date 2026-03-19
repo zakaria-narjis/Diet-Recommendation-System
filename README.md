@@ -4,7 +4,7 @@
 
 </div>
 
-<h1 align="center">Diet Recommendation System</h1>
+<h1 align="center">NutriMind</h1>
 <div align="center">
   <img src="Assets/logo_front_page.png" />
   <h4>A content-based diet recommendation web app built with Scikit-Learn, FastAPI, and Streamlit.</h4>
