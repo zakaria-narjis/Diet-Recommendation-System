@@ -1,10 +1,10 @@
 <div align="center">
 
-[![CI](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml/badge.svg)](https://github.com/zakaria-narjis/Diet-Recommendation-System/actions/workflows/ci.yml) [![DOI](https://zenodo.org/badge/582718021.svg)](https://zenodo.org/doi/10.5281/zenodo.12507163) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![CI](https://github.com/zakaria-narjis/nutrimind/actions/workflows/ci.yml/badge.svg)](https://github.com/zakaria-narjis/nutrimind/actions/workflows/ci.yml) [![DOI](https://zenodo.org/badge/582718021.svg)](https://zenodo.org/doi/10.5281/zenodo.12507163) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 </div>
 
-<h1 align="center">Diet Recommendation System</h1>
+<h1 align="center">NutriMind</h1>
 <div align="center">
   <img src="Assets/logo_front_page.png" />
   <h4>A content-based diet recommendation web app built with Scikit-Learn, FastAPI, and Streamlit.</h4>
@@ -27,13 +27,7 @@
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=zakaria-narjis%2FDiet-Recommendation-System&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=zakaria-narjis/Diet-Recommendation-System&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=zakaria-narjis/Diet-Recommendation-System&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=zakaria-narjis/Diet-Recommendation-System&type=date&legend=top-left" />
- </picture>
-</a>
+[![Star History Chart](https://api.star-history.com/image?repos=zakaria-narjis/nutrimind&type=date&legend=top-left)](https://www.star-history.com/?repos=zakaria-narjis%2Fnutrimind&type=date&legend=top-left)
 
 ---
 
@@ -110,8 +104,8 @@ At startup, each recipe's ingredient list is pre-parsed into a `frozenset` of lo
 **Option A — Use pre-built images** (fastest, no build step):
 
 ```bash
-git clone https://github.com/zakaria-narjis/Diet-Recommendation-System
-cd Diet-Recommendation-System
+git clone https://github.com/zakaria-narjis/nutrimind
+cd nutrimind
 docker compose pull
 docker compose up -d
 ```
@@ -119,8 +113,8 @@ docker compose up -d
 **Option B — Build from source**:
 
 ```bash
-git clone https://github.com/zakaria-narjis/Diet-Recommendation-System
-cd Diet-Recommendation-System
+git clone https://github.com/zakaria-narjis/nutrimind
+cd nutrimind
 docker compose up --build -d
 ```
 
